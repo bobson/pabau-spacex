@@ -159,7 +159,7 @@ const Comments = () => {
       </Typography>
       {comments.length ? (
         <List sx={{ mb: 2 }}>
-          {comments?.map(({ id, comment, name, timestamp }) => (
+          {comments?.map(({ id, comment, name }) => (
             <Paper key={id}>
               <ListItem
                 sx={{ flexDirection: "column", alignItems: "flex-start" }}
