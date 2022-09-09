@@ -62,18 +62,14 @@ const Comments = () => {
 
   const addComment = async () => {
     if (!!name.trim() && !!comment.trim()) {
-      try {
-        await addDoc(collection(db, "comments"), {
-          name,
-          comment,
-          timestamp: serverTimestamp(),
-        });
-        setName("");
-        setComment("");
-        setShowForm(false);
-      } catch (error) {
-        alert(error);
-      }
+      await addDoc(collection(db, "comments"), {
+        name,
+        comment,
+        timestamp: serverTimestamp(),
+      });
+      setName("");
+      setComment("");
+      setShowForm(false);
     }
   };
 
