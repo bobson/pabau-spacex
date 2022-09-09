@@ -16,7 +16,7 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-import { db } from "../firebase";
+import { db } from "../firebase_config";
 import {
   collection,
   query,
