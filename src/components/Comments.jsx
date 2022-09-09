@@ -14,6 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { db } from "../firebase";
 import {
@@ -25,8 +26,13 @@ import {
   serverTimestamp,
   doc,
   deleteDoc,
+  updateDoc,
+  getDoc,
 } from "firebase/firestore";
+import { async } from "@firebase/util";
+import Edit from "@mui/icons-material/Edit";
 
+// Add button styling
 const StyledFab = styled(Fab)({
   left: 90,
   marginBottom: "20px",
@@ -39,6 +45,7 @@ const Comments = () => {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [updateId, setUpdateId] = useState(false);
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -47,6 +54,13 @@ const Comments = () => {
   const handleComment = (event) => {
     setComment(event.target.value);
   };
+
+  // Get data from firestore
+  useEffect(() => {
+    onSnapshot(q, (snapshot) => {
+      setComments(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  }, [setComments]);
 
   const addComment = async () => {
     if (!!name.trim() && !!comment.trim()) {
@@ -60,20 +74,34 @@ const Comments = () => {
         setComment("");
         setShowForm(false);
       } catch (error) {
-        console.log(error);
+        alert(error);
       }
     }
   };
 
-  const deleteComment = (id) => {
-    deleteDoc(doc(db, "comments", id));
+  const deleteComment = async (id) => {
+    await deleteDoc(doc(db, "comments", id));
   };
 
-  useEffect(() => {
-    onSnapshot(q, (snapshot) => {
-      setComments(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  const getDataForEdit = async (id) => {
+    setShowForm(true);
+    setUpdateId(id);
+    const docSnap = await getDoc(doc(db, "comments", id));
+    console.log(docSnap.data().name);
+    setName(docSnap.data().name);
+    setComment(docSnap.data().comment);
+  };
+
+  const updateComment = async (id) => {
+    await updateDoc(doc(db, "comments", id), {
+      name,
+      comment,
     });
-  }, [setComments]);
+    setUpdateId(false);
+    setShowForm(false);
+    setName("");
+    setComment("");
+  };
 
   return (
     <Box sx={{ mt: 23 }}>
@@ -86,6 +114,7 @@ const Comments = () => {
           <AddIcon />
         </StyledFab>
       ) : null}
+
       {showForm ? (
         <Box
           component="form"
@@ -115,9 +144,16 @@ const Comments = () => {
             onChange={handleComment}
             required
           />
-          <Button onClick={addComment} variant="contained">
-            Post
-          </Button>
+
+          {!updateId ? (
+            <Button onClick={addComment} variant="contained">
+              Post
+            </Button>
+          ) : (
+            <Button onClick={() => updateComment(updateId)} variant="contained">
+              Edit
+            </Button>
+          )}
         </Box>
       ) : null}
       <Typography
@@ -144,6 +180,8 @@ const Comments = () => {
                   sx={{ wordWrap: "break-word" }}
                   secondary={comment}
                 />
+
+                <Edit onClick={() => getDataForEdit(id)} />
 
                 <DeleteIcon
                   sx={{ alignSelf: "end" }}
