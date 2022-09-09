@@ -1,6 +1,6 @@
 # SpaceX react app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), styled with MatelialUI, and firebase firestore cloud based database.
+This project was bootstrapped with Create React App, responsice, styled with MaterialUI, and firebase firestore cloud based database.
 
 ## Live Demo Page
 

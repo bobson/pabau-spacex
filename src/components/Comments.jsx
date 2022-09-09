@@ -29,10 +29,8 @@ import {
   updateDoc,
   getDoc,
 } from "firebase/firestore";
-import { async } from "@firebase/util";
-import Edit from "@mui/icons-material/Edit";
 
-// Add button styling
+// Add-button styling
 const StyledFab = styled(Fab)({
   left: 90,
   marginBottom: "20px",
@@ -87,7 +85,6 @@ const Comments = () => {
     setShowForm(true);
     setUpdateId(id);
     const docSnap = await getDoc(doc(db, "comments", id));
-    console.log(docSnap.data().name);
     setName(docSnap.data().name);
     setComment(docSnap.data().comment);
   };
@@ -181,12 +178,20 @@ const Comments = () => {
                   secondary={comment}
                 />
 
-                <Edit onClick={() => getDataForEdit(id)} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <EditIcon onClick={() => getDataForEdit(id)} />
 
-                <DeleteIcon
-                  sx={{ alignSelf: "end" }}
-                  onClick={() => deleteComment(id)}
-                />
+                  <DeleteIcon
+                    sx={{ alignSelf: "end" }}
+                    onClick={() => deleteComment(id)}
+                  />
+                </Box>
               </ListItem>
             </Paper>
           ))}

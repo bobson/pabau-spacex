@@ -7,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import Comments from "./Comments";
 import { Link } from "react-router-dom";
 
@@ -32,21 +34,19 @@ const ResponsiveDrawer = (props: DrawerProps) => {
           zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <ArrowBackIcon fontSize="large" />
+          </Link>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{ display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <Typography variant="h6" noWrap component="div">
-              Missions
-            </Typography>
-          </Link>
         </Toolbar>
       </AppBar>
       <Box
