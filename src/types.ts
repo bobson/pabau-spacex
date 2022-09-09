@@ -65,6 +65,6 @@ export interface Mass {
   kg: number;
 }
 
-export interface RocketVars {
-  rocketId: ID;
+export interface MissionsVars {
+  limit: number;
 }

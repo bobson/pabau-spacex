@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Comments from "./Comments";
 import { Link } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 type DrawerProps = {
   children: React.ReactNode; // children prop type
@@ -26,7 +26,6 @@ const ResponsiveDrawer = (props: DrawerProps) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
       <AppBar
         position="fixed"
         sx={{
@@ -44,9 +43,9 @@ const ResponsiveDrawer = (props: DrawerProps) => {
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/">
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
             <Typography variant="h6" noWrap component="div">
-              SpaceX
+              Missions
             </Typography>
           </Link>
         </Toolbar>

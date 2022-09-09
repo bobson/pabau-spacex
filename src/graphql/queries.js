@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_MISSIONS = gql`
-  query GetMissions {
-    launchesPast(limit: 50) {
+  query GetMissions($limit: Int!) {
+    launchesPast(limit: $limit) {
       mission_name
       launch_date_local
       links {

@@ -50,14 +50,18 @@ const Comments = () => {
 
   const addComment = async () => {
     if (!!name.trim() && !!comment.trim()) {
-      await addDoc(collection(db, "comments"), {
-        name,
-        comment,
-        timestamp: serverTimestamp(),
-      });
-      setName("");
-      setComment("");
-      setShowForm(false);
+      try {
+        await addDoc(collection(db, "comments"), {
+          name,
+          comment,
+          timestamp: serverTimestamp(),
+        });
+        setName("");
+        setComment("");
+        setShowForm(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -68,11 +72,8 @@ const Comments = () => {
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
       setComments(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      console.log("render");
     });
   }, [setComments]);
-
-  console.log(comments);
 
   return (
     <Box sx={{ mt: 23 }}>
@@ -131,17 +132,23 @@ const Comments = () => {
         <List sx={{ mb: 2 }}>
           {comments?.map(({ id, comment, name, timestamp }) => (
             <Paper key={id}>
-              <ListItem button>
+              <ListItem
+                sx={{ flexDirection: "column", alignItems: "flex-start" }}
+                button
+              >
                 <ListItemAvatar>
                   <Avatar alt="Profile Picture" src="" />
+                  {name}
                 </ListItemAvatar>
                 <ListItemText
                   sx={{ wordWrap: "break-word" }}
-                  primary={name}
                   secondary={comment}
                 />
 
-                <DeleteIcon onClick={() => deleteComment(id)} sx={{ ml: 2 }} />
+                <DeleteIcon
+                  sx={{ alignSelf: "end" }}
+                  onClick={() => deleteComment(id)}
+                />
               </ListItem>
             </Paper>
           ))}

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,6 +5,8 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Skeleton from "@mui/material/Skeleton";
+import Container from "@mui/material/Container";
 
 import { useQuery } from "@apollo/client";
 
@@ -24,7 +25,35 @@ const RocketPage = () => {
     variables: { rocketId },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Container>
+        <Grid
+          container
+          spacing={5}
+          sx={{
+            padding: "100px 10px 0 10px",
+            // alignItems: "center",
+            flexDirection: "column",
+            // margin: "auto",
+          }}
+        >
+          <Grid item xs={12} md={6}>
+            <Skeleton variant="rectangular" height={60} />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Skeleton height={60} />
+            <Skeleton height={60} />
+            <Skeleton height={60} />
+            <Skeleton height={60} />
+          </Grid>
+        </Grid>
+      </Container>
+    );
 
   const rows = [
     { label: "Engine Type", value: data?.rocket.type },
@@ -41,7 +70,6 @@ const RocketPage = () => {
     },
   ];
 
-  console.log(data);
   return (
     <ResponsiveDrawer>
       <Box
@@ -71,25 +99,23 @@ const RocketPage = () => {
             >
               <i>{data?.rocket.description}</i>
             </Typography>
+          </Grid>
 
-            <Grid container sx={{ justifyContent: "center" }}>
-              <Grid item>
-                <Table sx={{ m: 2 }}>
-                  <TableBody>
-                    {rows.map(({ label, value }, i) => (
-                      <TableRow key={i} hover>
-                        <TableCell component="th" scope="row">
-                          {label}
-                        </TableCell>
-                        <TableCell sx={{ fontWeight: "900" }} align="right">
-                          {value}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Grid>
-            </Grid>
+          <Grid item xs={8}>
+            <Table>
+              <TableBody>
+                {rows.map(({ label, value }, i) => (
+                  <TableRow key={i} hover>
+                    <TableCell component="th" scope="row">
+                      {label}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "900" }} align="right">
+                      {value}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </Grid>
         </Grid>
       </Box>
