@@ -18,7 +18,7 @@ import ResponsiveDrawer from "./ResponsiveDrawer";
 
 import { DataRockets } from "../types";
 
-const RocketPage = () => {
+const RocketPage = ({ missionName }: { missionName: string }) => {
   const { rocketId } = useParams();
 
   const { data, loading } = useQuery<DataRockets>(GET_ROCKET, {
@@ -71,7 +71,7 @@ const RocketPage = () => {
   ];
 
   return (
-    <ResponsiveDrawer>
+    <ResponsiveDrawer mission={missionName}>
       <Box
         sx={{
           padding: "1rem",

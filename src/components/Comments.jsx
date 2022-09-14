@@ -36,14 +36,16 @@ const StyledFab = styled(Fab)({
   marginBottom: "20px",
 });
 
-const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
-
-const Comments = () => {
+const Comments = ({ mission }) => {
+  // mission sets the collecetion name in firestore db for eatch mission
   const [comments, setComments] = useState([]);
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [updateId, setUpdateId] = useState(false);
+
+  // Set the query depending on the mission
+  const q = query(collection(db, mission), orderBy("timestamp", "desc"));
 
   const handleName = (event) => {
     setName(event.target.value);
@@ -53,7 +55,7 @@ const Comments = () => {
     setComment(event.target.value);
   };
 
-  // Get data from firestore
+  // Get data from firestore for the mission
   useEffect(() => {
     onSnapshot(q, (snapshot) => {
       setComments(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -62,7 +64,7 @@ const Comments = () => {
 
   const addComment = async () => {
     if (!!name.trim() && !!comment.trim()) {
-      await addDoc(collection(db, "comments"), {
+      await addDoc(collection(db, mission), {
         name,
         comment,
         timestamp: serverTimestamp(),
@@ -74,19 +76,19 @@ const Comments = () => {
   };
 
   const deleteComment = async (id) => {
-    await deleteDoc(doc(db, "comments", id));
+    await deleteDoc(doc(db, mission, id));
   };
 
   const getDataForEdit = async (id) => {
     setShowForm(true);
     setUpdateId(id);
-    const docSnap = await getDoc(doc(db, "comments", id));
+    const docSnap = await getDoc(doc(db, mission, id));
     setName(docSnap.data().name);
     setComment(docSnap.data().comment);
   };
 
   const updateComment = async (id) => {
-    await updateDoc(doc(db, "comments", id), {
+    await updateDoc(doc(db, mission, id), {
       name,
       comment,
     });
@@ -155,7 +157,7 @@ const Comments = () => {
         component="div"
         sx={{ p: 2, pb: 0 }}
       >
-        Comments
+        Comments for the {mission} mission
       </Typography>
       {comments.length ? (
         <List sx={{ mb: 2 }}>

@@ -15,6 +15,7 @@ const drawerWidth = 280;
 
 type DrawerProps = {
   children: React.ReactNode; // children prop type
+  mission: string | undefined;
 };
 
 const ResponsiveDrawer = (props: DrawerProps) => {
@@ -82,7 +83,7 @@ const ResponsiveDrawer = (props: DrawerProps) => {
           }}
         >
           {/* coments */}
-          {mobileOpen ? <Comments /> : null}
+          {mobileOpen ? <Comments mission={props.mission} /> : null}
           {/* prevent double rendering when is not on mobile*/}
         </Drawer>
         <Drawer
@@ -100,7 +101,7 @@ const ResponsiveDrawer = (props: DrawerProps) => {
           open
         >
           {/* coments */}
-          <Comments />
+          <Comments mission={props.mission} />
         </Drawer>
       </Box>
     </Box>

@@ -19,6 +19,7 @@ import { DataMissions, MissionsVars } from "./types";
 
 function App() {
   const [missionsToShow, setMissionsToShow] = useState("10");
+  const [missionName, setMissionName] = useState("");
 
   const limit = Number(missionsToShow);
 
@@ -91,7 +92,7 @@ function App() {
                       <MenuItem value="20">20</MenuItem>
                       <MenuItem value="50">50</MenuItem>
                       <MenuItem value="80">80</MenuItem>
-                      <MenuItem value="100">100</MenuItem>
+                      <MenuItem value="0">All</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -99,7 +100,14 @@ function App() {
                 {/* Miisions Grid */}
                 <Grid container spacing={4} mb={4}>
                   {data?.launchesPast.map((mission) => (
-                    <Grid item xs={12} lg={4} xl={3} key={mission.mission_name}>
+                    <Grid
+                      key={mission.mission_name}
+                      onClick={() => setMissionName(mission.mission_name)}
+                      item
+                      xs={12}
+                      lg={4}
+                      xl={3}
+                    >
                       <MissionCard mission={mission} />
                     </Grid>
                   ))}
@@ -109,7 +117,10 @@ function App() {
           </Container>
         }
       />
-      <Route path=":rocketId" element={<RocketPage />} />
+      <Route
+        path=":rocketId"
+        element={<RocketPage missionName={missionName} />}
+      />
     </Routes>
   );
 }
