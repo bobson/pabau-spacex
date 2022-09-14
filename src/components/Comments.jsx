@@ -60,7 +60,7 @@ const Comments = ({ mission }) => {
     onSnapshot(q, (snapshot) => {
       setComments(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
-  }, [setComments]);
+  }, [q]);
 
   const addComment = async () => {
     if (!!name.trim() && !!comment.trim()) {
